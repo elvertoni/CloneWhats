@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "552401098093",
+    "project_id": "clonewhats-ac948",
+    "storage_bucket": "clonewhats-ac948.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552401098093:android:251584d483e7c18aa8f664",
+        "android_client_info": {
+          "package_name": "com.example.clonewhats"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVN1Bb8UWdpoiYGk396La7OivpzMU5aeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
