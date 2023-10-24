@@ -8,7 +8,6 @@ import com.example.clonewhats.utils.exibirMensagem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 class LoginActivity : AppCompatActivity() {
 
@@ -19,7 +18,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var email: String
     private lateinit var senha: String
 
-    //Firebase
+    // Firebase
     private val firebaseAuth by lazy {
         FirebaseAuth.getInstance()
     }
@@ -28,6 +27,23 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         inicializarEventosClique()
+
+        //ATENÇÃO A PRIMEIRA VEZ EU DESLOGO O USUARIO E DEPOIS COMENTO A LINHA ABAIXO
+        //firebaseAuth.signOut()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        verificarUsuarioLogado()
+    }
+
+    private fun verificarUsuarioLogado() {
+        val usuarioAtual = firebaseAuth.currentUser
+        if (usuarioAtual != null) {
+            startActivity(
+                Intent(this, MainActivity::class.java)
+            )
+        }
     }
 
     private fun inicializarEventosClique() {
@@ -40,12 +56,10 @@ class LoginActivity : AppCompatActivity() {
             if (validarCampos()) {
                 logarUsuario()
             }
-
         }
     }
 
     private fun logarUsuario() {
-
         firebaseAuth.signInWithEmailAndPassword(
             email, senha
         ).addOnSuccessListener {
@@ -54,7 +68,6 @@ class LoginActivity : AppCompatActivity() {
                 Intent(this, MainActivity::class.java)
             )
         }.addOnFailureListener { erro ->
-
             try {
                 throw erro
             } catch (erroUsuarioInvalido: FirebaseAuthInvalidUserException) {
@@ -65,29 +78,25 @@ class LoginActivity : AppCompatActivity() {
                 exibirMensagem("E-mail ou senha estão incorretos!")
             }
         }
-
     }
-
 
     private fun validarCampos(): Boolean {
         email = binding.editLoginEmail.text.toString()
         senha = binding.editLoginSenha.text.toString()
 
-        if (email.isNotEmpty()) { //Não está vazio
-
+        if (email.isNotEmpty()) { // Não está vazio
             binding.textInputLayoutLoginEmail.error = null
             if (senha.isNotEmpty()) {
                 binding.textInputLayoutLoginSenha.error = null
                 return true
-
             } else {
-                binding.textInputLayoutLoginSenha.error = "Preencha o e-mail"
+                binding.textInputLayoutLoginSenha.error = "Preencha a senha"
+                return false
             }
-
-        } esle { //Está vazio
+        } else { // Está vazio
             binding.textInputLayoutLoginEmail.error = "Preencha o e-mail"
             return false
-
         }
+
     }
 }
